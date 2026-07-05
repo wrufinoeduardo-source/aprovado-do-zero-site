@@ -32,6 +32,18 @@
 
   html { scroll-behavior:smooth; }
 
+  /* Bloqueia seleção de texto, arrastar imagens e realce de toque no mobile */
+  * {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
+
   body{
     font-family: 'Inter', Arial, sans-serif;
     font-weight:400;
@@ -1026,6 +1038,52 @@
     if (LINK_HOTMART !== '#comprar') {
       link.setAttribute('href', LINK_HOTMART);
     }
+  });
+</script>
+
+<!-- ============================
+     PROTEÇÃO CONTRA INSPEÇÃO
+     (impede cópia casual do conteúdo — não é uma barreira técnica
+     infalível, pois o navegador do visitante sempre pode ser
+     configurado para ignorar estes bloqueios)
+============================ -->
+<script>
+  // Bloqueia o menu de contexto (botão direito)
+  document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+  });
+
+  // Bloqueia seleção de texto via mouse
+  document.addEventListener('selectstart', function (e) {
+    e.preventDefault();
+  });
+
+  // Bloqueia arrastar elementos (ex: imagens)
+  document.addEventListener('dragstart', function (e) {
+    e.preventDefault();
+  });
+
+  // Bloqueia atalhos de teclado comuns de inspeção
+  document.addEventListener('keydown', function (e) {
+    const key = e.key ? e.key.toUpperCase() : '';
+    const ctrlOrCmd = e.ctrlKey || e.metaKey;
+
+    // F12
+    if (key === 'F12') { e.preventDefault(); return; }
+
+    // Ctrl/Cmd + Shift + I / J / C (DevTools, Console, Seletor de elemento)
+    if (ctrlOrCmd && e.shiftKey && ['I', 'J', 'C'].includes(key)) {
+      e.preventDefault(); return;
+    }
+
+    // Ctrl/Cmd + U (ver código-fonte)
+    if (ctrlOrCmd && key === 'U') { e.preventDefault(); return; }
+
+    // Ctrl/Cmd + S (salvar página)
+    if (ctrlOrCmd && key === 'S') { e.preventDefault(); return; }
+
+    // Ctrl/Cmd + P (imprimir, às vezes usado para "salvar como PDF")
+    if (ctrlOrCmd && key === 'P') { e.preventDefault(); return; }
   });
 </script>
 
